@@ -1,19 +1,30 @@
-// Importação dos commponentes
+// Importação das bibliotecas
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
-//  Importação dos estilos globais
+// Importação dos commponentes
 import Baner from './components/Baner'
 import Header from './components/Header'
+
+//  Importação dos estilos globais
 import { GlobalCss } from './styles'
+
+// Criação das rotas
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Baner />
+  }
+])
 
 function App() {
   return (
-    <div className="App">
+    <>
       <GlobalCss />
       <div className="container">
         <Header />
       </div>
-      <Baner />
-    </div>
+      <RouterProvider router={router} />
+    </>
   )
 }
 

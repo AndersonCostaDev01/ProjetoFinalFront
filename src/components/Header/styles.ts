@@ -1,4 +1,7 @@
+// Importação da biblioteca de estilização
 import styled from 'styled-components'
+
+// Importaçãodas cores da aplicação
 import { cores } from '../../styles'
 
 export const HeaderBar = styled.header`

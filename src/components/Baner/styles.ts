@@ -1,5 +1,6 @@
 // Importação da biblioteca de estilização
 import styled from 'styled-components'
+import { TagContainer } from '../Tag/styles'
 
 // Estilização do componente
 export const Image = styled.div`
@@ -10,9 +11,21 @@ export const Image = styled.div`
   background-size: cover;
   font-weight: bold;
   padding-top: 340px;
+  position: relative;
+
+  .container {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
 
   @media (max-width: 768px) {
     background-position: center;
+  }
+
+  ${TagContainer} {
+    position: absolute;
+    top: 32px;
   }
 `
 export const Titulo = styled.h2`
