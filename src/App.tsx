@@ -1,13 +1,16 @@
 // Importação dos commponentes
 
 //  Importação dos estilos globais
-import { GlobalCss } from './styles'
+import Header from './components/Header'
+import { Container, GlobalCss } from './styles'
 
 function App() {
   return (
     <div className="App">
       <GlobalCss />
-      <h1>Ola mundo</h1>
+      <Container>
+        <Header />
+      </Container>
     </div>
   )
 }
