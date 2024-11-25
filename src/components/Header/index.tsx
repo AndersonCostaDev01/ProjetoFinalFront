@@ -1,3 +1,5 @@
+// Importação de bibliotecas
+import { Link } from 'react-router-dom'
 // Importação dos estilops do componente
 import * as S from './styles'
 
@@ -9,11 +11,13 @@ const Header = () => {
   return (
     <S.HeaderBar>
       <div>
-        <img src={logo} alt="Logo EPLAY" />
+        <Link to={'/'}>
+          <img src={logo} alt="Logo EPLAY" />
+        </Link>
         <nav>
           <S.Links>
             <S.LinkItem>
-              <a href="#">Categoria</a>
+              <Link to={'/categorias'}>Categorias</Link>
             </S.LinkItem>
             <S.LinkItem>
               <a href="#">Novidade</a>

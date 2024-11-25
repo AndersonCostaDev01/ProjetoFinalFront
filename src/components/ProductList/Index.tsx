@@ -1,3 +1,5 @@
+// Importação do models
+import Game from '../../Models/Game'
 // Importação dos componentes
 import Product from '../Product'
 // Importação dos estilos do componente
@@ -7,46 +9,26 @@ import * as S from './styles'
 export type Props = {
   title: string
   backgroud: 'gray' | 'black'
+  games: Game[]
 }
 
-function ProductList({ title, backgroud }: Props) {
+function ProductList({ title, backgroud, games }: Props) {
   return (
     <S.Container backgroud={backgroud}>
       <div className="container">
         <h2>{title}</h2>
         <S.List>
-          <Product
-            category="Ação"
-            description="teste"
-            image="//placehold.it/222x250"
-            infos={['-10%', 'R$ 150,00']}
-            system="windows"
-            title="Nome do jogo"
-          />
-          <Product
-            category="Ação"
-            description="teste"
-            image="//placehold.it/222x250"
-            infos={['-10%', 'R$ 150,00']}
-            system="windows"
-            title="Nome do jogo"
-          />
-          <Product
-            category="Ação"
-            description="teste"
-            image="//placehold.it/222x250"
-            infos={['-10%', 'R$ 150,00']}
-            system="windows"
-            title="Nome do jogo"
-          />
-          <Product
-            category="Ação"
-            description="teste"
-            image="//placehold.it/222x250"
-            infos={['-10%', 'R$ 150,00']}
-            system="windows"
-            title="Nome do jogo"
-          />
+          {games.map((game) => (
+            <Product
+              key={game.id}
+              category={game.category}
+              description={game.description}
+              image={game.image}
+              infos={game.infos}
+              system={game.system}
+              title={game.title}
+            />
+          ))}
         </S.List>
       </div>
     </S.Container>
