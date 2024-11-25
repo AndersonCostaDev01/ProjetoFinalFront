@@ -7,12 +7,19 @@ import Header from './components/Header'
 
 //  Importação dos estilos globais
 import { GlobalCss } from './styles'
+import ProductList from './components/ProductList/Index'
 
 // Criação das rotas
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Baner />
+    element: (
+      <>
+        <Baner />
+        <ProductList title="Promoções" backgroud="gray" />
+        <ProductList title="Em breve" backgroud="black" />
+      </>
+    )
   }
 ])
 
