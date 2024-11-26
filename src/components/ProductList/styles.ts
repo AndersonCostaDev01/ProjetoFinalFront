@@ -23,6 +23,10 @@ export const List = styled.ul`
   column-gap: 24px;
   row-gap: 24px;
   margin-top: 40px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 `
 export const Title = styled.h2`
   font-size: 18px;

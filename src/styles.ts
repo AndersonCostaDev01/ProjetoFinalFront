@@ -5,7 +5,8 @@ export const cores = {
   branco: '#EEEEEE',
   preto: '#111111',
   cinza: '#333333',
-  verde: '#10AC84'
+  verde: '#10AC84',
+  cinzaClaro: '#A3a3a3'
 }
 
 // estilização global
@@ -29,5 +30,9 @@ export const GlobalCss = createGlobalStyle`
     max-width: 1200px;
     width: 100%;
     margin: 0 auto;
+
+    @media (max-width: 768px) {
+      max-width: 90%;
+    }
   }
 `

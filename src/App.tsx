@@ -8,6 +8,7 @@ import Rotas from './routes'
 
 //  Importação dos estilos globais
 import { GlobalCss } from './styles'
+import Footer from './components/Footer'
 
 // Criação das rotas
 
@@ -19,6 +20,7 @@ function App() {
         <Header />
       </div>
       <Rotas />
+      <Footer />
     </BrowserRouter>
   )
 }
