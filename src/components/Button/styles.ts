@@ -2,13 +2,16 @@
 import styled from 'styled-components'
 // Importa a biblioteca de rotas
 import { Link } from 'react-router-dom'
-
 // Importação da Base de cores
 import { cores } from '../../styles'
+// Importaçãop das props
+import { Props } from '.'
 
-export const ButtonContainer = styled.button`
-  background-color: transparent;
-  border: 2px solid ${cores.branco};
+export const ButtonContainer = styled.button<Props>`
+  background-color: ${(props) =>
+    props.variant === 'primary' ? cores.branco : cores.verde};
+  border: 2px solid
+    ${(props) => (props.variant === 'primary' ? 'trasparent' : cores.verde)};
   color: ${cores.branco};
   font-size: 16px;
   font-weight: bold;
