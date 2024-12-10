@@ -25,7 +25,7 @@ const Baner = () => (
       </div>
       <Button
         type="link"
-        to="/produtos"
+        to="/product/1"
         title="Clique aqui para aproveitar a oferta"
       >
         Aproveite
