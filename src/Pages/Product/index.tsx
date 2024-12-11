@@ -3,6 +3,9 @@ import { useParams } from 'react-router-dom'
 // Importação dos componentes
 import Hero from '../../components/Hero'
 import Section from '../../components/Section'
+import SectionGalery from '../../components/SectionGalery'
+// Importação das imagens
+import img from '../../assets/images/fundo-hogwarts.png'
 
 const Product = () => {
   const { id } = useParams()
@@ -35,9 +38,7 @@ const Product = () => {
           jogo.
         </p>
       </Section>
-      <Section backgroud="black" title="Galeria">
-        <p>fotos</p>
-      </Section>
+      <SectionGalery defaultImage={img} name="Hogwarts Legacy" />
     </>
   )
 }
