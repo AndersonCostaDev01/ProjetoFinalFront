@@ -1,3 +1,5 @@
+// importação de bibliotecas
+import { useState } from 'react'
 // importação dos estilos do componente
 import * as S from './styles'
 // importação das imagens
@@ -8,11 +10,7 @@ import close from '../../assets/images/close-button.svg'
 // importação dos componentes
 import Section from '../Section'
 
-type GalerryType = {
-  type: 'image' | 'video'
-  url: string
-}
-
+// Criação de um mock generico de dados para testes
 const mock: GalerryType[] = [
   {
     type: 'image',
@@ -38,14 +36,39 @@ type Props = {
   name: string
 }
 
+// Criação de uma interface de tipos
+interface GalerryType {
+  type: 'image' | 'video'
+  url: string
+}
+interface ModalState extends GalerryType {
+  isVisible: boolean
+}
+
 const SectionGalery = ({ defaultImage, name }: Props) => {
+  //
+  const [modal, setModal] = useState<ModalState>({
+    type: 'image',
+    url: '',
+    isVisible: false
+  })
+  // Função para obter o cover da midia
   const getMediaCover = (item: GalerryType) => {
     if (item.type === 'image') return item.url
     return defaultImage
   }
+  // Função para obter o icone da midia
   const getMediaIcon = (item: GalerryType) => {
     if (item.type === 'image') return zoom
     return play
+  }
+  // Função para fechar o modal
+  const closeModal = () => {
+    setModal({
+      type: 'image',
+      url: '',
+      isVisible: false
+    })
   }
 
   return (
@@ -53,7 +76,16 @@ const SectionGalery = ({ defaultImage, name }: Props) => {
       <Section backgroud="black" title="Galeria">
         <S.Itens>
           {mock.map((item, index) => (
-            <S.Item key={index}>
+            <S.Item
+              key={index}
+              onClick={() => {
+                setModal({
+                  type: item.type,
+                  url: item.url,
+                  isVisible: true
+                })
+              }}
+            >
               <img
                 src={getMediaCover(item)}
                 alt={`Midia ${index + 1} da galeria de ${name}`}
@@ -68,16 +100,22 @@ const SectionGalery = ({ defaultImage, name }: Props) => {
           ))}
         </S.Itens>
       </Section>
-      <S.Modal>
+      <S.Modal className={modal.isVisible ? 'open' : ''}>
         <S.ModalContent className="container">
           <header>
             <h4>{name}</h4>
-            <img src={close} alt="Botão para fechar" />
+            <S.ButtonClose
+              src={close}
+              alt="Botão para fechar"
+              onClick={closeModal}
+            />
           </header>
-          <S.ImageOpen
-            src={defaultImage}
-            alt="Imagem do jogo Hogwarts Legacy"
-          />
+          {modal.type === 'image' ? (
+            <img src={modal.url} alt="" />
+          ) : (
+            <iframe src={modal.url} frameBorder="0"></iframe>
+          )}
+          {/* <img src={defaultImage} alt="Imagem do jogo Hogwarts Legacy" /> */}
         </S.ModalContent>
       </S.Modal>
     </>

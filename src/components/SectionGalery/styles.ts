@@ -59,9 +59,13 @@ export const Modal = styled.div`
   width: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 9999;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
+
+  &.open {
+    display: flex;
+  }
 `
 
 export const ModalContent = styled.div`
@@ -71,7 +75,19 @@ export const ModalContent = styled.div`
     justify-content: space-between;
     margin-bottom: 24px;
   }
+  img,
+  iframe {
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  iframe {
+    border-radius: 8px;
+    width: 100%;
+    height: 500px;
+  }
 `
-export const ImageOpen = styled.img`
-  width: 100%;
+export const ButtonClose = styled.img`
+  max-width: 16px;
+  width: 16px;
 `
