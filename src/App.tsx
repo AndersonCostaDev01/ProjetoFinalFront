@@ -26,3 +26,7 @@ function App() {
 }
 
 export default App
+/*
+  Api de games
+  https://fake-api-tau.vercel.app/api/eplay/esportes
+*/

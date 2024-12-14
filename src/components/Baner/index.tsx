@@ -1,37 +1,57 @@
+// Importação das bibliotecas
+import { useEffect, useState } from 'react'
+
 // Importação dos estilos do componente
 import * as S from './styles'
-
-// Importação da imagem de fundo
-import banner from '../../assets/images/banner-homem-aranha.png'
 
 // Importação do tag de destaque
 import Tag from '../Tag'
 import Button from '../Button'
 
-const Baner = () => (
-  <S.Image
-    style={{
-      backgroundImage: `url(${banner})`
-    }}
-  >
-    <div className="container">
-      <Tag size="big">Destaque do dia</Tag>
-      <div>
-        <S.Titulo>Marvel&apos;s Spider-Man: Miles Morales PS4 & PS5</S.Titulo>
-        <S.Preços>
-          De <span>R$ 250,00</span>
-          <br /> por apenas R$ 99,90
-        </S.Preços>
+// Importação da tipagem
+import { Game } from '../../Pages/Home'
+
+// importação do conversor de moeda
+import { formataPreco } from '../ProductList/Index'
+
+const Baner = () => {
+  // Lista de jogos
+  const [game, setGame] = useState<Game>()
+
+  useEffect(() => {
+    fetch('https://fake-api-tau.vercel.app/api/eplay/destaque').then((res) =>
+      res.json().then((res) => setGame(res))
+    )
+  }, [])
+
+  if (!game) {
+    return <h3>Carregando ...</h3>
+  }
+  return (
+    <S.Image
+      style={{
+        backgroundImage: `url(${game?.media.cover})`
+      }}
+    >
+      <div className="container">
+        <Tag size="big">Destaque do dia</Tag>
+        <div>
+          <S.Titulo>{game.name}</S.Titulo>
+          <S.Preços>
+            De <span>{formataPreco(game?.prices.old)}</span>
+            <br /> por apenas {formataPreco(game.prices.current)}
+          </S.Preços>
+        </div>
+        <Button
+          type="link"
+          to="/product/1"
+          title="Clique aqui para aproveitar a oferta"
+        >
+          Aproveite
+        </Button>
       </div>
-      <Button
-        type="link"
-        to="/product/1"
-        title="Clique aqui para aproveitar a oferta"
-      >
-        Aproveite
-      </Button>
-    </div>
-  </S.Image>
-)
+    </S.Image>
+  )
+}
 
 export default Baner

@@ -19,6 +19,9 @@ export const Card = styled.div`
 
   img {
     width: 100%;
+    display: block;
+    height: 260px;
+    object-fit: cover;
   }
 `
 export const Titulo = styled.h3`

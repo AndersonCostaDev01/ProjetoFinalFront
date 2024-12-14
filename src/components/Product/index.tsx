@@ -22,6 +22,13 @@ function Product({
   infos,
   image
 }: Props) {
+  // função para resumir a descricao
+  const getDescricao = (des: string) => {
+    if (des.length > 95) {
+      return des.slice(0, 92) + '...'
+    }
+    return des
+  }
   return (
     <S.Card>
       <img src={image} alt={title} />
@@ -33,7 +40,7 @@ function Product({
       <S.Titulo>{title}</S.Titulo>
       <Tag>{category}</Tag>
       <Tag>{system}</Tag>
-      <S.Descricao>{description}</S.Descricao>
+      <S.Descricao>{getDescricao(description)}</S.Descricao>
     </S.Card>
   )
 }

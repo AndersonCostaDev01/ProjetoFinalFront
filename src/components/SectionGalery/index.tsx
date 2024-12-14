@@ -9,6 +9,8 @@ import play from '../../assets/images/botao-play.svg'
 import close from '../../assets/images/close-button.svg'
 // importação dos componentes
 import Section from '../Section'
+// Importação de interfaçe de tipos
+import { GalerryType } from '../../Pages/Home'
 
 // Criação de um mock generico de dados para testes
 const mock: GalerryType[] = [
@@ -37,10 +39,7 @@ type Props = {
 }
 
 // Criação de uma interface de tipos
-interface GalerryType {
-  type: 'image' | 'video'
-  url: string
-}
+
 interface ModalState extends GalerryType {
   isVisible: boolean
 }
