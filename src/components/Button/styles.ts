@@ -27,4 +27,6 @@ export const ButtonLink = styled(Link)`
   font-weight: bold;
   border-radius: 8px;
   padding: 8px 16px;
+  position: relative;
+  z-index: 1;
 `

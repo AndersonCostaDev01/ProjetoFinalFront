@@ -6,12 +6,16 @@ import { cores } from '../../styles'
 
 // IMportação de componentes
 import { TagContainer } from '../Tag/styles'
+import { Link } from 'react-router-dom'
 
-export const Card = styled.div`
+export const Card = styled(Link)`
   background-color: ${cores.cinza};
   border-radius: 8px;
   padding: 8px;
   position: relative;
+  text-decoration: none;
+  color: ${cores.branco};
+  display: block;
 
   ${TagContainer} {
     margin-right: 8px;

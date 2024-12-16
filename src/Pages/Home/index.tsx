@@ -24,12 +24,12 @@ export type Game = {
     system: string
     developer: string
     publisher: string
-    language: string[]
+    languages: string[]
   }
   media: {
     thumbnail: string
     cover: string
-    galerry: GalerryType[]
+    gallery: GalerryType[]
   }
 }
 

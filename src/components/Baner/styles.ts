@@ -38,6 +38,11 @@ export const Image = styled.div`
     background-color: rgba(0, 0, 0, 0.7);
     content: '';
   }
+
+  .position {
+    position: relative;
+    z-index: 1;
+  }
 `
 export const Titulo = styled.h2`
   font-size: 36px;

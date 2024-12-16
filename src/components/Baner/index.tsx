@@ -44,7 +44,7 @@ const Baner = () => {
         </div>
         <Button
           type="link"
-          to="/product/1"
+          to={`product/${game.id}`}
           title="Clique aqui para aproveitar a oferta"
         >
           Aproveite

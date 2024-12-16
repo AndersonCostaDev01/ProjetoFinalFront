@@ -42,15 +42,17 @@ function ProductList({ title, backgroud, games }: Props) {
         <h2>{title}</h2>
         <S.List>
           {games.map((game) => (
-            <Product
-              key={game.id}
-              category={game.details.category}
-              description={game.description}
-              image={game.media.thumbnail}
-              infos={getGamesTag(game)}
-              system={game.details.system}
-              title={game.name}
-            />
+            <li key={game.id}>
+              <Product
+                id={game.id}
+                category={game.details.category}
+                description={game.description}
+                image={game.media.thumbnail}
+                infos={getGamesTag(game)}
+                system={game.details.system}
+                title={game.name}
+              />
+            </li>
           ))}
         </S.List>
       </div>

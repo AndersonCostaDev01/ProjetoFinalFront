@@ -12,6 +12,7 @@ type Props = {
   description: string
   infos: string[]
   image: string
+  id: number
 }
 
 function Product({
@@ -20,7 +21,8 @@ function Product({
   system,
   description,
   infos,
-  image
+  image,
+  id
 }: Props) {
   // função para resumir a descricao
   const getDescricao = (des: string) => {
@@ -30,7 +32,7 @@ function Product({
     return des
   }
   return (
-    <S.Card>
+    <S.Card to={`/product/${id}`}>
       <img src={image} alt={title} />
       <S.Infos>
         {infos.map((info) => (

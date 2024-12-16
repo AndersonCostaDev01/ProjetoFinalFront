@@ -75,6 +75,11 @@ export const ModalContent = styled.div`
     justify-content: space-between;
     margin-bottom: 24px;
   }
+
+  > img {
+    width: 100%;
+    border-radius: 8px;
+  }
   img,
   iframe {
     max-width: 100%;

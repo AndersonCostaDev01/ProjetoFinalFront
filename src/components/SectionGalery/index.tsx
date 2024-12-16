@@ -3,7 +3,6 @@ import { useState } from 'react'
 // importação dos estilos do componente
 import * as S from './styles'
 // importação das imagens
-import imgHL from '../../assets/images/imghl.png'
 import zoom from '../../assets/images/mais-zoom.svg'
 import play from '../../assets/images/botao-play.svg'
 import close from '../../assets/images/close-button.svg'
@@ -13,29 +12,12 @@ import Section from '../Section'
 import { GalerryType } from '../../Pages/Home'
 
 // Criação de um mock generico de dados para testes
-const mock: GalerryType[] = [
-  {
-    type: 'image',
-    url: imgHL
-  },
-  {
-    type: 'image',
-    url: imgHL
-  },
-  {
-    type: 'image',
-    url: imgHL
-  },
-  {
-    type: 'video',
-    url: 'https://www.youtube.com/embed/yF29baX-IsA?si=7jchLgWDGbGF9Ovu'
-  }
-]
 
 // criação da props
 type Props = {
   defaultImage: string
   name: string
+  itens: GalerryType[]
 }
 
 // Criação de uma interface de tipos
@@ -44,7 +26,7 @@ interface ModalState extends GalerryType {
   isVisible: boolean
 }
 
-const SectionGalery = ({ defaultImage, name }: Props) => {
+const SectionGalery = ({ defaultImage, name, itens }: Props) => {
   //
   const [modal, setModal] = useState<ModalState>({
     type: 'image',
@@ -74,7 +56,7 @@ const SectionGalery = ({ defaultImage, name }: Props) => {
     <>
       <Section backgroud="black" title="Galeria">
         <S.Itens>
-          {mock.map((item, index) => (
+          {itens?.map((item, index) => (
             <S.Item
               key={index}
               onClick={() => {
