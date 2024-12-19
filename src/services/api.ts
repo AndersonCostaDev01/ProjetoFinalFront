@@ -21,12 +21,47 @@ const api = createApi({
     // getSoon: endpoint que busca os jogos em breve
     getSoon: builder.query<Game[], void>({
       query: () => 'em-breve'
+    }),
+    // getCategories: endpoint que busca as categorias dos jogos
+    // ação
+    getAcaoGames: builder.query<Game[], void>({
+      query: () => 'acao'
+    }),
+    // esportes
+    getEsportesGames: builder.query<Game[], void>({
+      query: () => 'esportes'
+    }),
+    // simulacao
+    getSimulacaoGames: builder.query<Game[], void>({
+      query: () => 'simulacao'
+    }),
+    // luta
+    getLutaGames: builder.query<Game[], void>({
+      query: () => 'luta'
+    }),
+    // rpg
+    getRpgGames: builder.query<Game[], void>({
+      query: () => 'rpg'
+    }),
+    // getGame: endpoint que busca um jogo especifico atraves do id
+    getGame: builder.query<Game, string>({
+      query: (id) => `jogos/${id}`
     })
   })
 })
 
 // Exportação dos endpoints criados pelo createApi
-export const { useGetFeturdGameQuery, useGetOnSaleQuery, useGetSoonQuery } = api
+export const {
+  useGetFeturdGameQuery,
+  useGetOnSaleQuery,
+  useGetSoonQuery,
+  useGetAcaoGamesQuery,
+  useGetEsportesGamesQuery,
+  useGetSimulacaoGamesQuery,
+  useGetLutaGamesQuery,
+  useGetRpgGamesQuery,
+  useGetGameQuery
+} = api
 
 // Exportação da api
 export default api
