@@ -1,5 +1,5 @@
-// Importação das bibliotecas
-import { useEffect, useState } from 'react'
+// // Importação das bibliotecas
+// import { useEffect, useState } from 'react'
 
 // Importação dos estilos do componente
 import * as S from './styles'
@@ -8,21 +8,20 @@ import * as S from './styles'
 import Tag from '../Tag'
 import Button from '../Button'
 
-// Importação da tipagem
-import { Game } from '../../Pages/Home'
+// // Importação da tipagem
+// import { Game } from '../../Pages/Home'
 
 // importação do conversor de moeda
 import { formataPreco } from '../ProductList/Index'
 
+// Importação dos endpoints
+import { useGetFeturdGameQuery } from '../../services/api'
+
 const Baner = () => {
   // Lista de jogos
-  const [game, setGame] = useState<Game>()
 
-  useEffect(() => {
-    fetch('https://fake-api-tau.vercel.app/api/eplay/destaque').then((res) =>
-      res.json().then((res) => setGame(res))
-    )
-  }, [])
+  // Busca o jogo de destaque
+  const { data: game, isLoading } = useGetFeturdGameQuery()
 
   if (!game) {
     return <h3>Carregando ...</h3>

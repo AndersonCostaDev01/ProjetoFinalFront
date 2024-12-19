@@ -1,8 +1,11 @@
-// Importação das bibliotecas
-import { useEffect, useState } from 'react'
+// // Importação das bibliotecas
+// import { useEffect, useState } from 'react'
 // Importação dos componentes
 import Baner from '../../components/Baner'
 import ProductList from '../../components/ProductList/Index'
+
+// Importação dos endpoints
+import { useGetOnSaleQuery, useGetSoonQuery } from '../../services/api'
 
 export interface GalerryType {
   type: 'image' | 'video'
@@ -34,17 +37,13 @@ export type Game = {
 }
 
 function Home() {
-  const [promocoes, setPromocoes] = useState<Game[]>([])
-  const [emBreve, setEmBreve] = useState<Game[]>([])
+  // Busca os jogos usando o endpoint do RTKQuery
+  const { data: promocoes } = useGetOnSaleQuery()
+  const { data: emBreve } = useGetSoonQuery()
 
-  useEffect(() => {
-    fetch('https://fake-api-tau.vercel.app/api/eplay/promocoes').then((res) =>
-      res.json().then((res) => setPromocoes(res))
-    )
-    fetch('https://fake-api-tau.vercel.app/api/eplay/em-breve').then((res) =>
-      res.json().then((res) => setEmBreve(res))
-    )
-  }, [])
+  if (!promocoes || !emBreve) {
+    return <h3>Carregando ...</h3>
+  }
   return (
     <>
       <Baner />
