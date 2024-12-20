@@ -1,3 +1,5 @@
+// importação de biblioteca
+import { useDispatch } from 'react-redux'
 // importação dos estilos do componente
 import * as S from './styles'
 // importação dos componentes
@@ -8,11 +10,19 @@ import Button from '../Button'
 import { Game } from '../../Pages/Home'
 // importação de função de conversor de moeda
 import { formataPreco } from '../ProductList/Index'
+// importação do reducer
+import { add, open } from '../../store/reducers/cart'
 // Criação dos Tipos da Props
 type Props = {
   game: Game
 }
+
 const Hero = ({ game }: Props) => {
+  const dispatch = useDispatch()
+  const addToCart = () => {
+    dispatch(add(game))
+    dispatch(open())
+  }
   return (
     <S.Bannner style={{ backgroundImage: `url(${game.media.cover})` }}>
       <div className="container">
@@ -37,6 +47,7 @@ const Hero = ({ game }: Props) => {
               type="button"
               title="Clique aqui para adicionar ao carrinho"
               variant="secondary"
+              onClick={addToCart}
             >
               Adicinar ao carrinho
             </Button>

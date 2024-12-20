@@ -14,6 +14,7 @@ import store from './store'
 
 //  Importação dos estilos globais
 import { GlobalCss } from './styles'
+import Cart from './components/Cart'
 
 // Criação das rotas
 
@@ -27,6 +28,7 @@ function App() {
         </div>
         <Rotas />
         <Footer />
+        <Cart />
       </BrowserRouter>
     </Provider>
   )
