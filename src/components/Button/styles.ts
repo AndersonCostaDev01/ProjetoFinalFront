@@ -7,6 +7,10 @@ import { cores } from '../../styles'
 // Importaçãop das props
 import { Props } from '.'
 
+type LinkProps = {
+  variant: 'primary' | 'secondary'
+}
+
 export const ButtonContainer = styled.button<Props>`
   background-color: ${(props) =>
     props.variant === 'primary' ? cores.branco : cores.verde};
@@ -20,8 +24,11 @@ export const ButtonContainer = styled.button<Props>`
   padding: 8px 16px;
   cursor: pointer;
 `
-export const ButtonLink = styled(Link)`
-  background-color: transparent;
+export const ButtonLink = styled(Link)<LinkProps>`
+  background-color: ${(props) =>
+    props.variant === 'primary' ? cores.branco : cores.verde};
+  border: 2px solid
+    ${(props) => (props.variant === 'primary' ? 'trasparent' : cores.verde)};
   border: 2px solid ${cores.branco};
   color: ${cores.branco};
   font-size: 16px;
@@ -30,5 +37,6 @@ export const ButtonLink = styled(Link)`
   padding: 8px 16px;
   position: relative;
   z-index: 1;
+  text-decoration: none;
   cursor: pointer;
 `

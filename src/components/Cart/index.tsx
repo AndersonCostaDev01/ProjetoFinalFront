@@ -10,6 +10,7 @@ import * as S from './styles'
 import { close, remove } from '../../store/reducers/cart'
 // importação da funçaõ de conversor de moeda
 import { formataPreco } from '../ProductList/Index'
+// importação de imagem
 
 const Cart = () => {
   const { isOpen, itens } = useSelector((state: RootState) => state.cart)
@@ -30,6 +31,7 @@ const Cart = () => {
       return (total += currentValue.prices.current!)
     }, 0)
   }
+
   return (
     <S.CartContainer className={isOpen ? 'open' : ''}>
       <S.Overlay onClick={closeCart} />
@@ -58,8 +60,9 @@ const Cart = () => {
         </S.Price>
         <Button
           title="Clique aqui para continuar a compra"
-          type="button"
+          type="link"
           variant="secondary"
+          to="/checkout"
         >
           Continuar com a compra
         </Button>

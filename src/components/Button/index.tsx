@@ -32,7 +32,7 @@ const Button = ({
   }
 
   return (
-    <S.ButtonLink to={to as string} title={title}>
+    <S.ButtonLink to={to as string} title={title} variant={variant}>
       {children}
     </S.ButtonLink>
   )
