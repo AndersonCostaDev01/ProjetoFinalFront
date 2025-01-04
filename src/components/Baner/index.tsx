@@ -21,7 +21,7 @@ const Baner = () => {
   // Lista de jogos
 
   // Busca o jogo de destaque
-  const { data: game, isLoading } = useGetFeturdGameQuery()
+  const { data: game } = useGetFeturdGameQuery()
 
   if (!game) {
     return <h3>Carregando ...</h3>

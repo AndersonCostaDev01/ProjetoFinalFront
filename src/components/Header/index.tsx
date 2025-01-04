@@ -7,10 +7,12 @@ import * as S from './styles'
 // Importação das imagens
 import logo from '../../assets/images/logo.svg'
 import carrinho from '../../assets/images/carrinho.svg'
+import menu from '../../assets/images/Vector.svg'
 
 // importação do reducer do carrinho
 import { open } from '../../store/reducers/cart'
 import { RootState } from '../../store/'
+import { useState } from 'react'
 
 const Header = () => {
   // coloca a função useDispatch na variavel dispatch
@@ -28,6 +30,9 @@ const Header = () => {
   const openCart = () => {
     dispatch(open())
   }
+
+  const [isOpen, setIsOpen] = useState(false)
+
   return (
     <S.HeaderBar>
       <div>
@@ -35,7 +40,7 @@ const Header = () => {
           <img src={logo} alt="Logo EPLAY" />
         </Link>
         <nav>
-          <S.Links>
+          <S.Links isActive={isOpen}>
             <S.LinkItem>
               <Link to={'/categorias'}>Categorias</Link>
             </S.LinkItem>
@@ -48,8 +53,11 @@ const Header = () => {
           </S.Links>
         </nav>
       </div>
+      <S.MenuHamburger onClick={() => setIsOpen(!isOpen)}>
+        <img src={menu} alt="abrir menu de navegacao" />
+      </S.MenuHamburger>
       <S.CartButton onClick={openCart}>
-        {totalItens()} - Produtos(s)
+        {totalItens()} <span> - Produtos(s)</span>
         <img src={carrinho} alt="Carrinho de compras" />
       </S.CartButton>
     </S.HeaderBar>

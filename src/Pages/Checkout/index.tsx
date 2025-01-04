@@ -10,9 +10,13 @@ import Button from '../../components/Button'
 // Importação de imagens
 import barcode from '../../assets/images/barcode.svg'
 import creditcard from '../../assets/images/creditcard.svg'
+// importação dos endpoints
+import { usePurchaseMutation } from '../../services/api'
 
 const Checkout = () => {
   const [isCardActive, setIsCardActive] = useState(true)
+  const [purchase, { isLoading, error, data, isSuccess }] =
+    usePurchaseMutation()
 
   const formik = useFormik({
     initialValues: {
@@ -94,227 +98,311 @@ const Checkout = () => {
         )
     }),
     onSubmit: (values) => {
-      console.log(values)
+      purchase({
+        billing: {
+          document: values.cpf,
+          email: values.email,
+          name: values.name
+        },
+        delivery: {
+          email: values.destinationEmail
+        },
+        payment: {
+          installments: 1,
+          card: {
+            active: isCardActive,
+            code: Number(values.cvv),
+            name: values.cardName,
+            number: values.cardNumber,
+            owner: {
+              document: values.cpf,
+              name: values.holderName
+            },
+            expires: {
+              month: 1,
+              year: 2025
+            }
+          }
+        },
+        products: [
+          {
+            id: 1,
+            price: 100
+          }
+        ]
+      })
     }
   })
 
   return (
-    <form className="container" onSubmit={formik.handleSubmit}>
-      <Card title="Dados de cobrança">
-        <>
-          <S.Row>
-            <S.LabelGrup>
-              <label htmlFor="name">Nome Completo</label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={formik.values.name}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                className={formik.errors.name ? 'error' : ''}
-              />
-              <small>{formik.errors.name}</small>
-            </S.LabelGrup>
-            <S.LabelGrup>
-              <label htmlFor="email">E-mail</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formik.values.email}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                className={formik.errors.email ? 'error' : ''}
-              />
-              <small>{formik.errors.email}</small>
-            </S.LabelGrup>
-            <S.LabelGrup>
-              <label htmlFor="cpf">CPF</label>
-              <input
-                type="text"
-                id="cpf"
-                name="cpf"
-                value={formik.values.cpf}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                className={formik.errors.cpf ? 'error' : ''}
-              />
-              <small>{formik.errors.cpf}</small>
-            </S.LabelGrup>
-          </S.Row>
-          <S.Title className="margin-top">
-            Dados de entrega - conteúdo digital
-          </S.Title>
-          <S.Row>
-            <S.LabelGrup>
-              <label htmlFor="destinationEmail">E-mail</label>
-              <input
-                type="email"
-                id="destinationEmail"
-                name="destinationEmail"
-                value={formik.values.destinationEmail}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                className={formik.errors.destinationEmail ? 'error' : ''}
-              />
-              <small>{formik.errors.destinationEmail}</small>
-            </S.LabelGrup>
-            <S.LabelGrup>
-              <label htmlFor="confirmDestinationEmail">Confirmar E-mail</label>
-              <small>{formik.errors.confirmDestinationEmail}</small>
-              <input
-                type="email"
-                id="confirmDestinationEmail"
-                name="confirmDestinationEmail"
-                value={formik.values.confirmDestinationEmail}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                className={formik.errors.confirmDestinationEmail ? 'error' : ''}
-              />
-            </S.LabelGrup>
-          </S.Row>
-        </>
-      </Card>
-      <Card title="Pagamento">
-        <>
-          <S.ButtonDiv>
-            <S.TabButton
-              isActive={!isCardActive}
-              onClick={() => setIsCardActive(false)}
-            >
-              <img src={barcode} alt="Pagamento com boleto" />
-              <p>Boleto bancário</p>
-            </S.TabButton>
-            <S.TabButton
-              isActive={isCardActive}
-              onClick={() => setIsCardActive(true)}
-            >
-              <img src={creditcard} alt="Pagar com cartão de crédito" />
-              <p>Cartão de crédito</p>
-            </S.TabButton>
-          </S.ButtonDiv>
-          {isCardActive ? (
+    <div className="container">
+      {isLoading ? <h4>Carregando...</h4> : null}
+      {error ? (
+        <h4>algo deu errado, tente novamente em alguns intantes</h4>
+      ) : null}
+      {isSuccess ? (
+        <Card title="Muito obrigado">
+          <>
+            <p>
+              É com satisfação que informamos que recebemos seu pedido com
+              sucesso! <br />
+              Abaixo estão os detalhes da sua compra: <br />
+              Número do pedido: {data.orderId}
+              <br />
+              Forma de pagamento:{' '}
+              {isCardActive ? 'Cartão de crédito' : 'Boleto'}
+            </p>
+            <p className="margin-top">
+              É com satisfação que informamos que recebemos seu pedido com
+              sucesso! Abaixo estão os detalhes da sua compra: Número do pedido:
+              XXXXXX Forma de pagamento: Boleto Bancário Caso tenha optado pelo
+              pagamento via boleto bancário, lembre-se de que a confirmação pode
+              levar até 3 dias úteis. Após a aprovação do pagamento, enviaremos
+              um e-mail contendo o código de ativação do jogo.
+            </p>
+            <p className="margin-top">
+              Se você optou pelo pagamento com cartão de crédito, a liberação do
+              código de ativação ocorrerá após a aprovação da transação pela
+              operadora do cartão. Você receberá o código no e-mail cadastrado
+              em nossa loja.
+            </p>
+            <p className="margin-top">
+              Pedimos que verifique sua caixa de entrada e a pasta de spam para
+              garantir que receba nossa comunicação. Caso tenha alguma dúvida ou
+              necessite de mais informações, por favor, entre em contato conosco
+              através dos nossos canais de atendimento ao cliente.
+            </p>
+            <p className="margin-top">
+              Agradecemos por escolher a EPLAY e esperamos que desfrute do seu
+              jogo!
+            </p>
+          </>
+        </Card>
+      ) : (
+        <form onSubmit={formik.handleSubmit}>
+          <Card title="Dados de cobrança">
             <>
-              <S.Row marginTop="16px">
+              <S.Row>
                 <S.LabelGrup>
-                  <label htmlFor="holderName">Nome do titular do cartão</label>
+                  <label htmlFor="name">Nome Completo</label>
                   <input
                     type="text"
-                    id="holderName"
-                    name="holderName"
-                    value={formik.values.holderName}
+                    id="name"
+                    name="name"
+                    value={formik.values.name}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    className={formik.errors.holderName ? 'error' : ''}
+                    className={formik.errors.name ? 'error' : ''}
                   />
-                  <small>{formik.errors.holderName}</small>
+                  <small>{formik.errors.name}</small>
                 </S.LabelGrup>
                 <S.LabelGrup>
-                  <label htmlFor="cardName">Nome do cartão</label>
+                  <label htmlFor="email">E-mail</label>
                   <input
-                    type="text"
-                    id="cardName"
-                    name="cardName"
-                    value={formik.values.cardName}
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formik.values.email}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    className={formik.errors.cardName ? 'error' : ''}
+                    className={formik.errors.email ? 'error' : ''}
                   />
-                  <small>{formik.errors.cardName}</small>
+                  <small>{formik.errors.email}</small>
+                </S.LabelGrup>
+                <S.LabelGrup>
+                  <label htmlFor="cpf">CPF</label>
+                  <input
+                    type="text"
+                    id="cpf"
+                    name="cpf"
+                    value={formik.values.cpf}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className={formik.errors.cpf ? 'error' : ''}
+                  />
+                  <small>{formik.errors.cpf}</small>
                 </S.LabelGrup>
               </S.Row>
-              <S.Row marginTop="16px">
+              <S.Title className="margin-top">
+                Dados de entrega - conteúdo digital
+              </S.Title>
+              <S.Row marginTop="24px">
                 <S.LabelGrup>
-                  <label htmlFor="cardNumber">Número do cartão</label>
+                  <label htmlFor="destinationEmail">E-mail</label>
                   <input
-                    type="text"
-                    id="cardNumber"
-                    name="cardNumber"
-                    value={formik.values.cardNumber}
+                    type="email"
+                    id="destinationEmail"
+                    name="destinationEmail"
+                    value={formik.values.destinationEmail}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    className={formik.errors.cardNumber ? 'error' : ''}
+                    className={formik.errors.destinationEmail ? 'error' : ''}
                   />
-                  <small>{formik.errors.cardNumber}</small>
+                  <small>{formik.errors.destinationEmail}</small>
                 </S.LabelGrup>
-                <S.LabelGrup maxWidth="123px">
-                  <label htmlFor="dueMonth">Mês de vencimento</label>
+                <S.LabelGrup>
+                  <label htmlFor="confirmDestinationEmail">
+                    Confirmar E-mail
+                  </label>
                   <input
-                    type="text"
-                    id="dueMonth"
-                    name="dueMonth"
-                    value={formik.values.dueMonth}
+                    type="email"
+                    id="confirmDestinationEmail"
+                    name="confirmDestinationEmail"
+                    value={formik.values.confirmDestinationEmail}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    className={formik.errors.dueMonth ? 'error' : ''}
+                    className={
+                      formik.errors.confirmDestinationEmail ? 'error' : ''
+                    }
                   />
-                  <small>{formik.errors.dueMonth}</small>
-                </S.LabelGrup>
-                <S.LabelGrup maxWidth="123px">
-                  <label htmlFor="dueYear">Ano de vencimento</label>
-                  <input
-                    type="text"
-                    id="dueYear"
-                    name="dueYear"
-                    value={formik.values.dueYear}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    className={formik.errors.dueYear ? 'error' : ''}
-                  />
-                  <small>{formik.errors.dueYear}</small>
-                </S.LabelGrup>
-                <S.LabelGrup maxWidth="48px">
-                  <label htmlFor="cvv">CVV</label>
-                  <input
-                    type="text"
-                    id="cvv"
-                    name="cvv"
-                    value={formik.values.cvv}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    className={formik.errors.cvv ? 'error' : ''}
-                  />
-                  <small>{formik.errors.cvv}</small>
-                </S.LabelGrup>
-              </S.Row>
-              <S.Row marginTop="16px">
-                <S.LabelGrup maxWidth="116px">
-                  <label htmlFor="installments">Parcelas</label>
-                  <select
-                    name="installments"
-                    id="installments"
-                    value={formik.values.installments}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                  >
-                    <option value={1}>1x de R$ 200,00</option>
-                    <option value={2}>2x de R$ 100,00</option>
-                    <option value={3}>3x de R$ 66,67</option>
-                  </select>
+                  <small>{formik.errors.confirmDestinationEmail}</small>
                 </S.LabelGrup>
               </S.Row>
             </>
-          ) : (
-            <S.PaymentText>
-              Ao optar por essa forma de pagamento, é importante lembrar que a
-              confirmação pode levar até 3 dias úteis, devido aos prazos
-              estabelecidos pelas instituições financeiras. Portanto, a
-              liberação do código de ativação do jogo adquirido ocorrerá somente
-              após a aprovação do pagamento do boleto.
-            </S.PaymentText>
-          )}
-        </>
-      </Card>
-      <Button
-        title="Clique aqui para adicionar ao carrinho"
-        variant="secondary"
-        type="button"
-        onClick={formik.handleSubmit}
-      >
-        Finalizar compra
-      </Button>
-    </form>
+          </Card>
+          <Card title="Pagamento">
+            <>
+              <S.ButtonDiv>
+                <S.TabButton
+                  isActive={!isCardActive}
+                  onClick={() => setIsCardActive(false)}
+                >
+                  <img src={barcode} alt="Pagamento com boleto" />
+                  <p>Boleto bancário</p>
+                </S.TabButton>
+                <S.TabButton
+                  isActive={isCardActive}
+                  onClick={() => setIsCardActive(true)}
+                >
+                  <img src={creditcard} alt="Pagar com cartão de crédito" />
+                  <p>Cartão de crédito</p>
+                </S.TabButton>
+              </S.ButtonDiv>
+              {isCardActive ? (
+                <>
+                  <S.Row marginTop="16px">
+                    <S.LabelGrup>
+                      <label htmlFor="holderName">
+                        Nome do titular do cartão
+                      </label>
+                      <input
+                        type="text"
+                        id="holderName"
+                        name="holderName"
+                        value={formik.values.holderName}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={formik.errors.holderName ? 'error' : ''}
+                      />
+                      <small>{formik.errors.holderName}</small>
+                    </S.LabelGrup>
+                    <S.LabelGrup>
+                      <label htmlFor="cardName">Nome do cartão</label>
+                      <input
+                        type="text"
+                        id="cardName"
+                        name="cardName"
+                        value={formik.values.cardName}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={formik.errors.cardName ? 'error' : ''}
+                      />
+                      <small>{formik.errors.cardName}</small>
+                    </S.LabelGrup>
+                  </S.Row>
+                  <S.Row marginTop="16px">
+                    <S.LabelGrup>
+                      <label htmlFor="cardNumber">Número do cartão</label>
+                      <input
+                        type="text"
+                        id="cardNumber"
+                        name="cardNumber"
+                        value={formik.values.cardNumber}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={formik.errors.cardNumber ? 'error' : ''}
+                      />
+                      <small>{formik.errors.cardNumber}</small>
+                    </S.LabelGrup>
+                    <S.LabelGrup maxWidth="123px">
+                      <label htmlFor="dueMonth">Mês de vencimento</label>
+                      <input
+                        type="text"
+                        id="dueMonth"
+                        name="dueMonth"
+                        value={formik.values.dueMonth}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={formik.errors.dueMonth ? 'error' : ''}
+                      />
+                      <small>{formik.errors.dueMonth}</small>
+                    </S.LabelGrup>
+                    <S.LabelGrup maxWidth="123px">
+                      <label htmlFor="dueYear">Ano de vencimento</label>
+                      <input
+                        type="text"
+                        id="dueYear"
+                        name="dueYear"
+                        value={formik.values.dueYear}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={formik.errors.dueYear ? 'error' : ''}
+                      />
+                      <small>{formik.errors.dueYear}</small>
+                    </S.LabelGrup>
+                    <S.LabelGrup maxWidth="48px">
+                      <label htmlFor="cvv">CVV</label>
+                      <input
+                        type="text"
+                        id="cvv"
+                        name="cvv"
+                        value={formik.values.cvv}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={formik.errors.cvv ? 'error' : ''}
+                      />
+                      <small>{formik.errors.cvv}</small>
+                    </S.LabelGrup>
+                  </S.Row>
+                  <S.Row marginTop="16px">
+                    <S.LabelGrup maxWidth="116px">
+                      <label htmlFor="installments">Parcelas</label>
+                      <select
+                        name="installments"
+                        id="installments"
+                        value={formik.values.installments}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                      >
+                        <option value={1}>1x de R$ 200,00</option>
+                        <option value={2}>2x de R$ 100,00</option>
+                        <option value={3}>3x de R$ 66,67</option>
+                      </select>
+                    </S.LabelGrup>
+                  </S.Row>
+                </>
+              ) : (
+                <S.PaymentText>
+                  Ao optar por essa forma de pagamento, é importante lembrar que
+                  a confirmação pode levar até 3 dias úteis, devido aos prazos
+                  estabelecidos pelas instituições financeiras. Portanto, a
+                  liberação do código de ativação do jogo adquirido ocorrerá
+                  somente após a aprovação do pagamento do boleto.
+                </S.PaymentText>
+              )}
+            </>
+          </Card>
+          <Button
+            title="Clique aqui para adicionar ao carrinho"
+            variant="secondary"
+            type="button"
+            onClick={formik.handleSubmit}
+          >
+            Finalizar compra
+          </Button>
+        </form>
+      )}
+    </div>
   )
 }
 

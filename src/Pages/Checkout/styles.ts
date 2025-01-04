@@ -21,6 +21,10 @@ export const Row = styled.div<MarginTopProps>`
   column-gap: 24px;
   align-items: flex-end;
   margin-top: ${(props) => props.marginTop || '0'};
+
+  @media (max-width: 768px) {
+    column-gap: 10px;
+  }
 `
 export const LabelGrup = styled.div<MaxWidthProps>`
   flex: auto;
@@ -30,6 +34,10 @@ export const LabelGrup = styled.div<MaxWidthProps>`
   label {
     color: ${cores.branco};
     font-size: 14px;
+
+    @media (max-width: 768px) {
+      font-size: 12px;
+    }
   }
 
   input,
@@ -47,6 +55,11 @@ export const LabelGrup = styled.div<MaxWidthProps>`
     position: absolute;
     top: 32px;
     right: 8px;
+
+    @media (max-width: 768px) {
+      position: static;
+      top: 0;
+    }
   }
 
   .error {

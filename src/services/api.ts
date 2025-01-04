@@ -4,6 +4,41 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 // importação da tipagem
 import { Game } from '../Pages/Home'
 
+// criação do tipo para produtos
+type Product = {
+  id: number
+  price: number
+}
+// criação de tipos para os endpoints
+type PurchasePayload = {
+  products: Product[]
+  billing: {
+    name: string
+    email: string
+    document: string
+  }
+  delivery: {
+    email: string
+  }
+  payment: {
+    card: {
+      active: boolean
+      owner?: {
+        name: string
+        document: string
+      }
+      name?: string
+      number?: string
+      expires?: {
+        month: number
+        year: number
+      }
+      code?: number
+    }
+    installments: number
+  }
+}
+
 const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://fake-api-tau.vercel.app/api/eplay'
@@ -46,6 +81,15 @@ const api = createApi({
     // getGame: endpoint que busca um jogo especifico atraves do id
     getGame: builder.query<Game, string>({
       query: (id) => `jogos/${id}`
+    }),
+    //
+    // post para compras
+    purchase: builder.mutation<any, PurchasePayload>({
+      query: (body) => ({
+        url: 'checkout',
+        method: 'POST',
+        body
+      })
     })
   })
 })
@@ -60,7 +104,8 @@ export const {
   useGetSimulacaoGamesQuery,
   useGetLutaGamesQuery,
   useGetRpgGamesQuery,
-  useGetGameQuery
+  useGetGameQuery,
+  usePurchaseMutation
 } = api
 
 // Exportação da api

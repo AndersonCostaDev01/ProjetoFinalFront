@@ -40,6 +40,10 @@ export const Sidebar = styled.aside`
     width: 100%;
     max-width: 100%;
   }
+
+  @media (max-width: 768px) {
+    max-width: 80%;
+  }
 `
 export const Price = styled.p`
   font-weight: bold;
