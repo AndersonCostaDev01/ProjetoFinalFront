@@ -28,10 +28,12 @@ export const Active = styled.div`
   justify-content: center;
   opacity: 0;
   transition: all 0.3s ease-in-out;
+  cursor: zoom-out;
 `
 export const Item = styled.li`
   margin-right: 16px;
   position: relative;
+  cursor: zoom-in;
   > img {
     width: 150px;
     height: 150px;

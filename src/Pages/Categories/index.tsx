@@ -1,4 +1,5 @@
 // Importação dos componentes
+import Loader from '../../components/Loader'
 import ProductList from '../../components/ProductList/Index'
 
 // importação dos endpoints
@@ -24,7 +25,7 @@ function Categories() {
     !gamesLuta ||
     !gamesRPG
   ) {
-    return <h3>Carregando ...</h3>
+    return <Loader />
   }
   return (
     <>

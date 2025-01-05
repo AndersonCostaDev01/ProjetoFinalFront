@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom'
 import Hero from '../../components/Hero'
 import Section from '../../components/Section'
 import SectionGalery from '../../components/SectionGalery'
+import Loader from '../../components/Loader'
 // Importação dos endpoints
 import { useGetGameQuery } from '../../services/api'
 
@@ -14,7 +15,7 @@ const Product = () => {
   const { data: game } = useGetGameQuery(id!)
 
   if (!game) {
-    return <h3>Carregando ...</h3>
+    return <Loader />
   }
   return (
     <>

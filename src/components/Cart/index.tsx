@@ -1,6 +1,7 @@
 // importação de biblioteca
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../store'
+import { useNavigate } from 'react-router-dom'
 // importação dos estilos do componente
 import Button from '../Button'
 import Tag from '../Tag'
@@ -10,10 +11,12 @@ import * as S from './styles'
 import { close, remove } from '../../store/reducers/cart'
 // importação da funçaõ de conversor de moeda
 import { formataPreco } from '../ProductList/Index'
-// importação de imagem
+// importação de função de pegar valor
+import { getTotalPrice } from '../../utils/getPrice'
 
 const Cart = () => {
   const { isOpen, itens } = useSelector((state: RootState) => state.cart)
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const closeCart = () => {
     dispatch(close())
@@ -25,11 +28,14 @@ const Cart = () => {
   const totalItens = () => {
     return itens.length
   }
-  // função para somar os itens do carrinho
-  const getTotalPrice = () => {
-    return itens.reduce((total, currentValue) => {
-      return (total += currentValue.prices.current!)
-    }, 0)
+
+  const goToCheckout = () => {
+    closeCart()
+    if (itens.length > 0) {
+      navigate('/checkout')
+    } else {
+      alert('Seu carrinho esta vazio')
+    }
   }
 
   return (
@@ -55,14 +61,14 @@ const Cart = () => {
         </ul>
         <S.Quantity>{totalItens()} jogos no carrinho</S.Quantity>
         <S.Price>
-          total de {formataPreco(getTotalPrice())}{' '}
+          total de {formataPreco(getTotalPrice(itens))}{' '}
           <span>em ate 6x sem juros</span>
         </S.Price>
         <Button
           title="Clique aqui para continuar a compra"
-          type="link"
+          type="button"
           variant="secondary"
-          to="/checkout"
+          onClick={goToCheckout}
         >
           Continuar com a compra
         </Button>

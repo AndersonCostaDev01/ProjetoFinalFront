@@ -3,7 +3,7 @@ import * as S from './styles'
 
 // Criação dos Tipos da Props
 export type Props = {
-  type: 'button' | 'link'
+  type: 'button' | 'link' | 'submit'
   title: string
   to?: string
   onClick?: () => void
@@ -18,10 +18,10 @@ const Button = ({
   children,
   variant = 'primary'
 }: Props) => {
-  if (type === 'button') {
+  if (type === 'button' || type === 'submit') {
     return (
       <S.ButtonContainer
-        type="button"
+        type={type}
         title={title}
         onClick={onClick}
         variant={variant}

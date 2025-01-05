@@ -2,6 +2,7 @@
 // import { useEffect, useState } from 'react'
 // Importação dos componentes
 import Baner from '../../components/Baner'
+import Loader from '../../components/Loader'
 import ProductList from '../../components/ProductList/Index'
 
 // Importação dos endpoints
@@ -42,7 +43,7 @@ function Home() {
   const { data: emBreve } = useGetSoonQuery()
 
   if (!promocoes || !emBreve) {
-    return <h3>Carregando ...</h3>
+    return <Loader />
   }
   return (
     <>

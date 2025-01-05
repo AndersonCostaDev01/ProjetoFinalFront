@@ -1,7 +1,10 @@
 // Importação de bibliotecas
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useFormik } from 'formik'
+import { useSelector } from 'react-redux'
 import * as Yop from 'yup'
+// Importação do redux
+import { RootState } from '../../store'
 // Importação de estilos do componente
 import * as S from './styles'
 // Importação de componentes
@@ -12,12 +15,25 @@ import barcode from '../../assets/images/barcode.svg'
 import creditcard from '../../assets/images/creditcard.svg'
 // importação dos endpoints
 import { usePurchaseMutation } from '../../services/api'
+import { Navigate } from 'react-router-dom'
+import { getTotalPrice } from '../../utils/getPrice'
+import { formataPreco } from '../../components/ProductList/Index'
+
+type Installment = {
+  quantity: number
+  amount: number
+  formattedAmount: string
+}
 
 const Checkout = () => {
   const [isCardActive, setIsCardActive] = useState(true)
   const [purchase, { isLoading, error, data, isSuccess }] =
     usePurchaseMutation()
+  const { itens } = useSelector((state: RootState) => state.cart)
+  const [installments, setInstallments] = useState<Installment[]>([])
+  const totalPrice = getTotalPrice(itens)
 
+  // Função para validar formulario com formik e yup
   const formik = useFormik({
     initialValues: {
       // Dados gerais para qualquer cobrança
@@ -134,6 +150,35 @@ const Checkout = () => {
     }
   })
 
+  // Função para verificar se o campo tem erro
+  const checkInputHasError = (fildName: string) => {
+    const isTouched = fildName in formik.touched // Verifica se o campo foi tocado
+    const isError = fildName in formik.errors // Verifica se o campo tem erro
+    const hasErro = isTouched && isError // verifica sem ambos os campos sao true
+
+    return hasErro // retorna o resultado da verificação
+  }
+
+  useEffect(() => {
+    const calculaInstallments = () => {
+      const installmentsArray: Installment[] = []
+      for (let i = 1; i <= 6; i++) {
+        installmentsArray.push({
+          quantity: i,
+          amount: totalPrice / i,
+          formattedAmount: formataPreco(totalPrice / i)
+        })
+      }
+      return installmentsArray
+    }
+    if (totalPrice > 0) {
+      setInstallments(calculaInstallments())
+    }
+  }, [totalPrice])
+
+  if (itens.length === 0) {
+    return <Navigate to="/" />
+  }
   return (
     <div className="container">
       {isLoading ? <h4>Carregando...</h4> : null}
@@ -192,7 +237,7 @@ const Checkout = () => {
                     value={formik.values.name}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    className={formik.errors.name ? 'error' : ''}
+                    className={checkInputHasError('name') ? 'error' : ''}
                   />
                   <small>{formik.errors.name}</small>
                 </S.LabelGrup>
@@ -266,6 +311,7 @@ const Checkout = () => {
                 <S.TabButton
                   isActive={!isCardActive}
                   onClick={() => setIsCardActive(false)}
+                  type="button"
                 >
                   <img src={barcode} alt="Pagamento com boleto" />
                   <p>Boleto bancário</p>
@@ -273,6 +319,7 @@ const Checkout = () => {
                 <S.TabButton
                   isActive={isCardActive}
                   onClick={() => setIsCardActive(true)}
+                  type="button"
                 >
                   <img src={creditcard} alt="Pagar com cartão de crédito" />
                   <p>Cartão de crédito</p>
@@ -374,9 +421,15 @@ const Checkout = () => {
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                       >
-                        <option value={1}>1x de R$ 200,00</option>
-                        <option value={2}>2x de R$ 100,00</option>
-                        <option value={3}>3x de R$ 66,67</option>
+                        {installments.map((installment) => (
+                          <option
+                            value={installment.amount}
+                            key={installment.quantity}
+                          >
+                            {installment.quantity}x de{' '}
+                            {installment.formattedAmount}
+                          </option>
+                        ))}
                       </select>
                     </S.LabelGrup>
                   </S.Row>
@@ -395,7 +448,7 @@ const Checkout = () => {
           <Button
             title="Clique aqui para adicionar ao carrinho"
             variant="secondary"
-            type="button"
+            type="submit"
             onClick={formik.handleSubmit}
           >
             Finalizar compra
